@@ -34,7 +34,8 @@ public:
         {
             s_count[s[i]-'a'] += 1; 
         }
-        if(is_vec_same(p_count,s_count))
+        if(s_count == p_count)
+        // if(is_vec_same(p_count,s_count))
         {
             res.push_back(0);
         }
@@ -43,7 +44,8 @@ public:
             size_t r_p = l_p + w - 1;
            s_count[s[l_p-1]-'a'] -= 1;
            s_count[s[r_p]-'a'] += 1;
-           if(is_vec_same(s_count,p_count))
+           if(s_count == p_count)
+        //    if(is_vec_same(s_count,p_count))
            {
             res.push_back(l_p);
            }
@@ -51,16 +53,16 @@ public:
         return res;
     }
    
-    bool is_vec_same(vector<int>& a,vector<int>& b)
-    {
-        bool flag = true;
-        for(size_t i=0;i<a.size();i++)
-        {
-            if(a[i]!=b[i])
-                return false;
-        }
-        return true;
-    }
+    // bool is_vec_same(vector<int>& a,vector<int>& b)
+    // {
+    //     bool flag = true;
+    //     for(size_t i=0;i<a.size();i++)
+    //     {
+    //         if(a[i]!=b[i])
+    //             return false;
+    //     }
+    //     return true;
+    // }
 };
 // @lc code=end
 
