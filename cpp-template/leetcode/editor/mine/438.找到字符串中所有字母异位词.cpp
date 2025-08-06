@@ -21,6 +21,7 @@ public:
             if(p.size()==1) return s[0]==p[0]? vector<int> {0}:vector<int>{};
             return vector<int>{};
         }
+        if(p.size()>s.size()) return vector<int>{};
         size_t l_p =0,w=p.size();
         vector<int> res;
         vector<int> s_count(26,0);
@@ -29,41 +30,45 @@ public:
         {
             p_count[c-'a'] = p_count[c-'a'] + 1;
         }
-        for(;l_p+w<s.size();l_p++)
+        for(size_t i=0;i<w;i++)
         {
-            if(condition(s,p,l_p,w))
-            {
-                res.push_back(l_p);
-            }
+            s_count[s[i]-'a'] += 1; 
+        }
+        if(is_vec_same(p_count,s_count))
+        {
+            res.push_back(0);
+        }
+        for(l_p=1;l_p+w-1<s.size();l_p++)
+        {
+            size_t r_p = l_p + w - 1;
+           s_count[s[l_p-1]-'a'] -= 1;
+           s_count[s[r_p]-'a'] += 1;
+           if(is_vec_same(s_count,p_count))
+           {
+            res.push_back(l_p);
+           }
         }
         return res;
     }
-    bool condition(vector<int>&s_count, string& s,const vector<int>& p_count,size_t l_p,size_t w)
+   
+    bool is_vec_same(vector<int>& a,vector<int>& b)
     {
-        bool res = true;
-        for(size_t i=0;i<w;i++)
+        bool flag = true;
+        for(size_t i=0;i<a.size();i++)
         {
-            bool flag = false;
-            for(size_t j=0;j<p.size();j++)
-            {
-                if(s[l_p+ i]==p[j])
-                {
-                    flag = true;
-                    break;
-                }
-            }
-            res &= flag;
+            if(a[i]!=b[i])
+                return false;
         }
-        return res;
-    }   
+        return true;
+    }
 };
 // @lc code=end
 
 int main() {
     Solution solution;
     // your test code here
-    string input("cbaebabacd");
-    string p("abc");
+    string input("abab");
+    string p("ab");
     vector<int> res = solution.findAnagrams(input,p);
     //test
     print_vec(res);
