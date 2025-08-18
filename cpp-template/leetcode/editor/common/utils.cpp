@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
-
-void print_vec_2d(const std::vector<std::vector<int>>& vec) {
+template <typename T>
+void print_vec_2d(const std::vector<std::vector<T>>& vec) {
     for (const auto& row : vec) {
         for (const auto& elem : row) {
             std::cout << elem << " ";
