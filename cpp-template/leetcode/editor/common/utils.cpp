@@ -9,7 +9,8 @@ void print_vec_2d(const std::vector<std::vector<T>>& vec) {
         std::cout << std::endl; // 每行结束后换行
     }
 }
-void print_vec(const std::vector<int>& vec)
+template <typename T>
+void print_vec(const std::vector<T>& vec)
 {
     for (const auto& elem : vec) 
         std::cout << elem << " ";
