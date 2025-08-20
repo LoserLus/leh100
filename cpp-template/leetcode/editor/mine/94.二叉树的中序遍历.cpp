@@ -35,18 +35,15 @@ vector<int> inorderTraversal(TreeNode* root){
     TreeNode* node = root;
     while(node!=nullptr||!s.empty())
     {
-       if(node!=nullptr)
+       while(node!=nullptr)
        {
         s.push(node);
         node=node->left;
        }
-       else
-       {
         node = s.top();
         s.pop();
         vec.push_back(node->val);
         node = node->right;
-       }
     }
     return vec;
 }
