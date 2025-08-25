@@ -67,6 +67,23 @@ public:
         }
     }
 
+    static TreeNode* findVal(TreeNode* root, int val)
+    {
+        if(root==nullptr) return root;
+        queue<TreeNode*> q;
+        q.push(root);
+        TreeNode* node;
+        while(!q.empty())
+        {
+            node = q.front();
+            q.pop();
+            if(node->val==val) return node;
+            if(node->left!=nullptr) q.push(node->left);
+            if(node->right!=nullptr) q.push(node->right);
+        }
+        return nullptr;
+    }
+
 private:
     // 计算树的高度，改为静态方法
     static int getHeight(TreeNode *node) {
