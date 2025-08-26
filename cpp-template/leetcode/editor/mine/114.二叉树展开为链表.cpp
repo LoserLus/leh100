@@ -29,25 +29,20 @@ using namespace std;
  */
 class Solution {
 public:
-        void flatten(TreeNode* root) {
+ void flatten(TreeNode* root) {
         if(root==nullptr) return;
         vector<TreeNode*> vec;
         
         stack<TreeNode*> s;
         s.push(root);
         TreeNode* node = nullptr;
-        while(!s.empty()||node!=nullptr)
+        while(!s.empty())
         {
-            while(node!=nullptr)
-            {
-                // node = s.top();
-                // s.pop();
-                vec.push_back(node);
-                s.push(node->right);
-                node = node ->left;
-            }
             node = s.top();
             s.pop();
+            vec.push_back(node);
+            if(node->right!=nullptr) s.push(node->right);
+            if(node->left!=nullptr) s.push(node->left);
         }
 
         for(size_t i = 0;i<vec.size()-1;i++)
@@ -56,6 +51,34 @@ public:
             vec[i]->right = vec[i+1];
         }
     }
+
+    //     void flatten(TreeNode* root) {
+    //     if(root==nullptr) return;
+    //     vector<TreeNode*> vec;
+        
+    //     stack<TreeNode*> s;
+    //     s.push(root);
+    //     TreeNode* node = nullptr;
+    //     while(!s.empty()||node!=nullptr)
+    //     {
+    //         while(node!=nullptr)
+    //         {
+    //             // node = s.top();
+    //             // s.pop();
+    //             vec.push_back(node);
+    //             s.push(node->right);
+    //             node = node ->left;
+    //         }
+    //         node = s.top();
+    //         s.pop();
+    //     }
+
+    //     for(size_t i = 0;i<vec.size()-1;i++)
+    //     {
+    //         vec[i]->left = nullptr;
+    //         vec[i]->right = vec[i+1];
+    //     }
+    // }
 
     // void flatten(TreeNode* root) {
     //     if(root==nullptr) return;
