@@ -26,3 +26,11 @@ void print_vec(const std::vector<T>& vec)
 //     print_vec_2d(vec); // 调用函数打印二维向量
 //     return 0;
 // }
+std::vector<std::vector<char>> makeBoard(std::initializer_list<std::initializer_list<char>> init) {
+    std::vector<std::vector<char>> board;
+    for (auto &row : init) {
+        board.emplace_back(row);  // initializer_list 可以直接构造 vector
+    }
+    return board;
+}
+
