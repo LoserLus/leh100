@@ -18,58 +18,45 @@ using namespace std;
 class Solution
 {
 public:
-    int m,n;
-    vector<vector<int>> dirs{{1,0},{-1,0},{0,1},{0,-1}};
+vector<pair<int,int>> dirs = {{1,0},{-1,0},{0,-1},{0,1}};
 	bool exist(vector<vector<char>> &board, string word)
 	{
-		if (word.size() == 0 || board.size() == 0) return false;
-		vector<char> vec;
-
-		bool flag = false;
-        m = board.size();
-        n = board[0].size();
-        // vector<vector<int>> visited(m, vector<int>(n, 0));
-		for (size_t i = 0; i < m; i++)
+		if(word.size()==0||board.size()==0) return false;
+		bool res = false;
+		for(int i=0;i<board.size();i++)
+		{
+			for(int j=0;j<board[0].size();j++)
 			{
-				for (size_t j = 0; j <n; j++)
-					{
-						// vector<vector<int>> visited(board.size(), vector<int>(board[0].size(), 0));
-						flag = func(board, word, i, j, 0);
-                        // flag = func(board, word, visited, i, j, 0);
-						if (flag) return true;
-					}
-			}
+				res = func(board,word,i,j,0);
+				if(res) return true;
 
+			}
+		}
 		return false;
 	}
-    bool func(vector<vector<char>> &board, string &word, int row, int col, int depth)
-	// bool func(vector<vector<char>> &board, string &word, vector<vector<int>> &visited, int row, int col, int depth)
-	{
-        
-		if (board[row][col] != word[depth]) return false;
-        if(depth==word.size()-1) return true;
+  bool func(vector<vector<char>> &board,string& word,int r,int c,int depth)
+  {
+	if(r<0||r>=board.size()) return false;
+	if(c<0||c>=board[0].size()) return false;
+	if(board[r][c]=='#') return false;
+	if(board[r][c]!=word[depth]) return false;
 
-        char tmp = board[row][col];
-        board[row][col] = '#';
-		// visited[row][col] = 1;
-		for(auto& dir:dirs)
-        {
-            int nr = row + dir[0];
-            int nc = col + dir[1];
-            if(nr<0||nr>=m) continue;
-            if(nc<0||nc>=n) continue;
-            if(board[nr][nc]=='#') continue;
-            // if(visited[nr][nc]==1) continue;
-            if(func(board, word, nr, nc, depth + 1))
-            // if(func(board, word, visited, nr, nc, depth + 1))
-            {
-                return true;
-            }
-        }
-        board[row][col] = tmp;
-        // visited[row][col] = 0;
-        return false;
+	if(depth==word.size()-1) return true;
+	
+	bool res = false;
+	char tmp = board[r][c];
+	board[r][c] = '#';
+	for(auto& dir:dirs)
+	{
+		int nr = r + dir.first;
+		int nc = c + dir.second;
+		res |= func(board,word,nr,nc,depth+1);
+		
 	}
+	board[r][c] = tmp;
+	return res;
+
+  }
 };
 // @lc code=end
 
@@ -79,20 +66,20 @@ int main()
 	// your test code here
 	// [["C","A","A"],["A","A","A"],["B","C","D"]]
 	// "AAB"
-	string word = "AAAAAAAAAAAAABB";
+	string word = "SEE";
 	auto board = makeBoard({
 		// {'a'}
 		// {'a','b'},
 		// {'c','d'},
-		// {'A', 'B', 'C', 'E'},
-		// {'S', 'F', 'E', 'S'},
-		// {'A', 'D', 'E', 'E'},
-        {'A','A','A','A','A','A'},
-        {'A','A','A','A','A','A'},
-        {'A','A','A','A','A','A'},
-        {'A','A','A','A','A','A'},
-        {'A','A','A','A','A','B'},
-        {'A','A','A','A','B','A'}
+		{'A', 'B', 'C', 'E'},
+		{'S', 'F', 'C', 'S'},
+		{'A', 'D', 'E', 'E'},
+        // {'A','A','A','A','A','A'},
+        // {'A','A','A','A','A','A'},
+        // {'A','A','A','A','A','A'},
+        // {'A','A','A','A','A','A'},
+        // {'A','A','A','A','A','B'},
+        // {'A','A','A','A','B','A'}
 		// {'C','A','A'},
 		// {'A','A','A'},
 		// {'B','C','D'}
