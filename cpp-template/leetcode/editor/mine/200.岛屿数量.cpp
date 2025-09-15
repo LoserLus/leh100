@@ -17,38 +17,35 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-    vector<vector<int>> dirs{{1,0},{-1,0},{0,1},{0,-1}};
-    int m = 0, n= 0;
+    vector<pair<int,int>> dirs = {{1,0},{-1,0},{0,1},{0,-1}};
     int numIslands(vector<vector<char>>& grid) {
-        if(grid.size()==0) return 0;
-        m = grid.size();
-        n = grid[0].size();
-        int res = 0;
-        for(size_t i =0;i<m;i++)
+      if(grid.size()==0) return 0;
+    //   if(grid.size()==1&&grid[0].size()==1) return 1;
+      int res = 0;
+      for(int i=0;i<grid.size();i++)
+      {
+        for(int j =0;j<grid[0].size();j++)
         {
-            for(size_t j=0;j<n;j++)
-            {
-                if(grid[i][j]=='1')
-                {
-                    res++;
-                    func(grid,i,j);
-                }
-            }
+            if(grid[i][j]=='0') continue;
+            res++;
+            func(grid,i,j);
         }
-        return res;
+      }
+      return res;
     }
-    void func(vector<vector<char>>& grid,int r,int c)
+    void func(vector<vector<char>>& grid,int r, int c)
     {
+        if(r<0||r>=grid.size()) return ;
+        if(c<0||c>=grid[0].size()) return ;
         if(grid[r][c]=='0') return;
         grid[r][c] = '0';
-        for(auto& dir:dirs)
+        for( auto& dir:dirs)
         {
-            int nr = r + dir[0];
-            int nc = c + dir[1];
-            if(nr>=m || nr<0) continue;
-            if(nc>=n || nc<0) continue;
-            func(grid,nr,nc); 
+            int nr = dir.first + r;
+            int nc = dir.second + c;
+            func(grid,nr,nc);
         }
+        return ;
     }
 };
 // @lc code=end
@@ -57,10 +54,10 @@ int main() {
     Solution solution;
     // your test code here
     auto board = makeBoard({
+        {'1','1','1','1','0'},
+        {'1','1','0','1','0'},
         {'1','1','0','0','0'},
-        {'1','1','0','0','0'},
-        {'0','0','1','0','0'},
-        {'0','0','0','1','1'},
+        {'0','0','0','0','0'},
 	});
 	print_vec_2d<char>(board);
 	auto res = solution.numIslands(board);

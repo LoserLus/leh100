@@ -8,72 +8,62 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include<algorithm>
+#include <algorithm>
+#include <set>
 #include "../common/utils.cpp"
 
 using namespace std;
 
 // @lc code=start
-class Solution {
+class Solution
+{
 public:
-    vector<vector<int>> threeSum(vector<int>& nums) 
+    vector<vector<int>> threeSum(vector<int> &nums)
     {
-        sort(nums.begin(),nums.end());
-        vector<vector<int>> res;
-        for(size_t i=0;i<nums.size();i++)
+        set<vector<int>> res;
+        unordered_map<int, int> hash_map;
+        for (auto num : nums)
         {
-            if(nums[i]>0) break;
-            if(i>0 && nums[i] == nums[i-1]) continue;
-            size_t l_p = i+1;
-            size_t r_p = nums.size()-1;
-            while(l_p<r_p){
-                int sum = nums[i] + nums[l_p] + nums[r_p];
-                if(0==sum){
-                    res.push_back(vector<int>{nums[i],nums[l_p],nums[r_p]});
-                    while(l_p<r_p && nums[l_p]==nums[l_p+1]) l_p++;
-                    while(l_p<r_p && nums[r_p]==nums[r_p-1]) r_p--;
-                    l_p++;
-                    r_p -- ;
-                }
-                else if(sum<0) l_p++;
-                else r_p -- ;
-            }
-            
+            if (hash_map.count(num))
+                hash_map[num]++;
+            else
+                hash_map[num] = 1;
         }
-        return res;
-        // vector<vector<int>> res;
-        // for(size_t i=0;i<nums.size();i++)
-        // {
-        //     for(size_t j=0;j<nums.size();j++)
-        //     {
-
-        //             for(size_t k=0;k<nums.size();k++)
-        //             {
-        //                 if(i!=j && i!=k && j!=k)
-        //                 {
-        //                     if(0 == nums[i]+nums[j]+nums[k])
-        //                     {
-        //                         res.push_back(vector<int> {nums[i],nums[j],nums[k]});
-        //                     }
-        //                 }
-        //             }
-        //     }
-            
-        // }
-        // return res;
+        for (int i = 0; i < nums.size(); i++)
+        {
+            for (int j = i + 1; j < nums.size(); j++)
+            {
+                int sum = nums[i] + nums[j];
+                hash_map[nums[i]]--;
+                hash_map[nums[j]]--;
+                if (hash_map.count(-sum) && hash_map[-sum] >= 1)
+                {
+                    vector<int> tmp = {nums[i], nums[j], -sum};
+                    sort(tmp.begin(), tmp.end());
+                    res.insert(tmp);
+                }
+                hash_map[nums[i]]++;
+                hash_map[nums[j]]++;
+            }
+        }
+        vector<vector<int>> r;
+        for (auto &v : res)
+        {
+            r.push_back(v);
+        }
+        return r;
     }
 };
 // @lc code=end
 
-int main() {
+int main()
+{
     Solution solution;
     // your test code here
-    vector<int> input({-1,0,1,2,-1,-4});
+    vector<int> input({0,0,0,0});
     vector<vector<int>> res = solution.threeSum(input);
     print_vec_2d(res);
 }
-
-
 
 /*
 // @lcpr case=start
@@ -89,4 +79,3 @@ int main() {
 // @lcpr case=end
 
  */
-

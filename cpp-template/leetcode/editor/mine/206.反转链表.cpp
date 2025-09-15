@@ -28,27 +28,44 @@ using namespace std;
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        if(head==nullptr || head->next==nullptr) return head;
-        ListNode* node = nullptr;
-        ListNode* next_node = nullptr;
-        ListNode* pre_node = nullptr;
-        node = head;
-        while(node!=nullptr)
+        if(head==nullptr||head->next==nullptr) return head;
+        ListNode dummy;
+        ListNode* p;
+        p = head;
+        while(p)
         {
-            next_node = node->next;
-            node->next = pre_node;
-            pre_node = node;
-            node = next_node;
+            ListNode* tmp = p->next;
+            p->next = dummy.next;
+            dummy.next = p;
+            p = tmp;
         }
-        return pre_node;
+        return dummy.next;
     }
 };
 // @lc code=end
-
+ListNode* tail_insert(const vector<int>& vals)
+{
+    if(vals.size()==0) return nullptr;
+    ListNode dummy;
+    ListNode* p = new ListNode(vals[0]);
+    p->next = nullptr;
+    dummy.next = p;   
+    for(int i=1;i<vals.size();i++)
+    {
+        p = new ListNode(vals[i]);
+        p ->next = nullptr;
+        ListNode* tail = dummy.next;
+        while(tail->next!=nullptr) tail = tail->next;
+        tail -> next = p;
+    }
+    return dummy.next;
+}
 int main() {
     Solution solution;
     // your test code here
-    ListNode* head = ListNode::createHead({1,2,3,4,5});
+    ListNode* head = tail_insert({1,2,3,4,5});
+    ListNode::print(head);
+    // ListNode* head = ListNode::createHead({1,2,3,4,5});
     ListNode* res = solution.reverseList(head);
     ListNode::print(res);
     ListNode::freeList(res);

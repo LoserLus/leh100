@@ -30,26 +30,25 @@ using namespace std;
 class Solution {
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
-        if(root==nullptr) return vector<vector<int>> {};
-        vector<vector<int>> res;
-        queue<TreeNode*> q;
-        TreeNode* node = root;
-        q.push(node);
-        while(!q.empty())
+      if(root==nullptr) return vector<vector<int>>{};
+      queue<TreeNode*> q;
+      vector<vector<int>> res;
+      q.push(root);
+      while(!q.empty())
+      {
+        int q_size = q.size();
+        vector<int> vec;
+        while(q_size--)
         {
-            vector<int> tmp;
-            size_t q_size = q.size();
-            for(size_t i =0;i<q_size;i++)
-            {
-                node = q.front();
-                q.pop();
-                tmp.push_back(node->val);
-                if(node->left!=nullptr) q.push(node->left);
-                if(node->right!=nullptr) q.push(node->right);
-            }
-            res.push_back(tmp);
+            TreeNode* p = q.front();
+            q.pop();
+            if(p->left) q.push(p->left);
+            if(p->right) q.push(p->right);
+            vec.push_back(p->val);
         }
-        return res;
+        res.push_back(vec);
+      }
+      return res;
     }
 };
 // @lc code=end

@@ -8,7 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include <algorithm>
 using namespace std;
 
 // @lc code=start
@@ -17,27 +17,17 @@ public:
     int lengthOfLIS(vector<int>& nums) {
         if(nums.size()==1) return 1;
         vector<int> dp(nums.size(),1);
-        for (size_t i = 1; i < dp.size(); i++)
+        for(int i=0;i<nums.size();i++)
         {
-            for(size_t j = 0;j<i;j++)
+            for(int j=0;j<i;j++)
             {
-                if(nums[j]<nums[i])
+                if(nums[i]>nums[j])
                 {
                     dp[i] = max(dp[i],dp[j]+1);
                 }
             }
-    
         }
-        
-        for (size_t i = 1; i < dp.size(); i++)
-        {
-            if(nums[i]>nums[i-1])
-                dp[i] = max(dp[i-1],dp[i]);
-            else
-                dp[i]=dp[i-1];
-        }
-        
-        return dp[nums.size()-1];
+        return *max_element(dp.begin(),dp.end());
     }
 };
 // @lc code=end
@@ -45,7 +35,7 @@ public:
 int main() {
     Solution solution;
     // your test code here
-     vector<int> input({0,1,0,3,2,3});
+     vector<int> input({7,7,7,7,7,7,7});
     int res = solution.lengthOfLIS(input);
     cout<<res<<endl;
 }
