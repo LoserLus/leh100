@@ -20,13 +20,31 @@ class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
         
-        unordered_set <string> wordSet(wordDict.begin(),wordDict.end());
+        // unordered_set <string> wordSet(wordDict.begin(),wordDict.end());
         // bool res = func(s,wordDict,0);
         vector<int> mem(s.size(),-1);
-        bool res = func(s,wordSet,mem,0);
+        bool res = func(s,wordDict,mem,0);
         return res;
     }
-    bool func(string& s,  unordered_set<string>& wordSet,vector<int>& mem,int depth)
+    // bool func(string& s,  unordered_set<string>& wordSet,vector<int>& mem,int depth)
+    // {
+    //     if(depth==s.size())
+    //     {
+    //         return true;
+    //     }
+    //     if(mem[depth]!=-1) return mem[depth];
+    //     bool res = false;
+    //     for(int i=depth;i<s.size();i++)
+    //     {
+    //         string tmp = s.substr(depth,i-depth+1);
+    //         if(!wordSet.count(tmp)) continue;
+    //         res|=func(s,wordSet,mem,i+1);
+    //     }
+    //     if(res)mem[depth]=1;
+    //     else mem[depth] =0;
+    //     return res;
+    // }
+    bool func(string& s, vector<string>& wordDict,vector<int>& mem,int depth)
     {
         if(depth==s.size())
         {
@@ -34,32 +52,17 @@ public:
         }
         if(mem[depth]!=-1) return mem[depth];
         bool res = false;
-        for(int i=depth;i<s.size();i++)
+        for(int i=0;i<wordDict.size();i++)
         {
-            string tmp = s.substr(depth,i-depth+1);
-            if(!wordSet.count(tmp)) continue;
-            res|=func(s,wordSet,mem,i+1);
+            int word_size = wordDict[i].size();
+            string tmp = s.substr(depth,word_size);
+            if(tmp!=wordDict[i]) continue;
+            res|=func(s,wordDict,mem,depth+word_size);
         }
-        if(res)mem[depth]=1;
-        else mem[depth] =0;
+        if(res) mem[depth]=1;
+        else mem[depth]=0;
         return res;
     }
-    // bool func(string& s, vector<string>& wordDict,int depth)
-    // {
-    //     if(depth==s.size())
-    //     {
-    //         return true;
-    //     }
-    //     bool res = false;
-    //     for(int i=0;i<wordDict.size();i++)
-    //     {
-    //         int word_size = wordDict[i].size();
-    //         string tmp = s.substr(depth,word_size);
-    //         if(tmp!=wordDict[i]) continue;
-    //         res|=func(s,wordDict,depth+word_size);
-    //     }
-    //     return res;
-    // }
 };
 // @lc code=end
 
