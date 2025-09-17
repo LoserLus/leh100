@@ -17,39 +17,34 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-    vector<vector<int>> res;
+   
     vector<vector<int>> subsets(vector<int>& nums) {
-        res.push_back(vector<int>{});
-        if(nums.size()==0) return res;
-        if(nums.size()==1) {res.push_back(vector<int>{nums[0]});return res;}
-        vector<int> vis(nums.size(),0);
-        vector<int> vec;
-        dfs(nums,vis,vec,0);
-        return res;
-
+       if(nums.size()<=1) return vector<vector<int>> {{},{nums}};
+       vector<vector<int>> res;
+       vector<int> vec;
+       func(res,nums,vec,0);
+       return res;
     }
-    void dfs(vector<int>& nums,vector<int>& vis,vector<int>& vec, int depth)
+    
+    void func(vector<vector<int>>& res,vector<int>& nums,vector<int>& vec,int depth)
     {
-        if(depth == nums.size()) return;
-        for(size_t i = depth;i<nums.size();i++)
+        res.push_back(vec);
+        if(depth==nums.size()) return;
+        for(int i=depth;i<nums.size();i++)
         {
-            if(vis[i]) continue;
-            vis[i] = 1;
             vec.push_back(nums[i]);
-            res.push_back(vec);
-            dfs(nums,vis,vec,i);
+            func(res,nums,vec,i+1);
             vec.pop_back();
-            vis[i] = 0;
         }
-
     }
+    
 };
 // @lc code=end
 
 int main() {
     Solution solution;
     // your test code here
-    vector<int> input({1,2,3});
+    vector<int> input({1});
     vector<vector<int>> res = solution.subsets(input);
     print_vec_2d<int>(res);
 }

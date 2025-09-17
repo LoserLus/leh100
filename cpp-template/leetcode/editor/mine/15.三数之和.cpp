@@ -20,38 +20,34 @@ class Solution
 public:
     vector<vector<int>> threeSum(vector<int> &nums)
     {
-        set<vector<int>> res;
-        unordered_map<int, int> hash_map;
-        for (auto num : nums)
-        {
-            if (hash_map.count(num))
-                hash_map[num]++;
-            else
-                hash_map[num] = 1;
-        }
-        for (int i = 0; i < nums.size(); i++)
-        {
-            for (int j = i + 1; j < nums.size(); j++)
+       sort(nums.begin(),nums.end());
+       vector<vector<int>> res;
+       for(int i=0;i<nums.size();i++)
+       {
+            if(nums[i]>0) break;
+            if(i>0&&nums[i]==nums[i-1]) continue;
+            int left = i+1;
+            int right = nums.size()-1;
+            while(left<right)
             {
-                int sum = nums[i] + nums[j];
-                hash_map[nums[i]]--;
-                hash_map[nums[j]]--;
-                if (hash_map.count(-sum) && hash_map[-sum] >= 1)
+                int sum = nums[i]+nums[left]+nums[right];
+                if(sum>0) right--;
+                else if(sum<0) left++;
+                else
                 {
-                    vector<int> tmp = {nums[i], nums[j], -sum};
-                    sort(tmp.begin(), tmp.end());
-                    res.insert(tmp);
+                    res.push_back({nums[i],nums[left],nums[right]});
+                    // 判断的顺序不能错，对于left是判断当前left和下一个是否相同，相同再移动
+                    while(left<right&&nums[left]==nums[left+1]) left++;
+                    // 对于right也是判断是否与下一个相同
+                    while(left<right&&nums[right]==nums[right-1]) right--;
+                    // 经过循环之后，left需要继续移动一次才能保证去重
+                    left++;
+                    right--;
                 }
-                hash_map[nums[i]]++;
-                hash_map[nums[j]]++;
             }
-        }
-        vector<vector<int>> r;
-        for (auto &v : res)
-        {
-            r.push_back(v);
-        }
-        return r;
+
+       }
+       return res;
     }
 };
 // @lc code=end
@@ -60,7 +56,7 @@ int main()
 {
     Solution solution;
     // your test code here
-    vector<int> input({0,0,0,0});
+    vector<int> input({-1,0,1,2,-1,-4});
     vector<vector<int>> res = solution.threeSum(input);
     print_vec_2d(res);
 }
