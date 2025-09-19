@@ -40,34 +40,54 @@ public:
     {
         if (head == nullptr)
             return nullptr;
-        vector<Node *> vec;
-        Node *p = head;
-        int cnt = 0;
-        unordered_map<Node *, int> hash_map;
-        while (p)
+        unordered_map<Node*,Node*> hash_map;
+        Node* p = head;
+        while(p)
         {
-            hash_map[p] = cnt;
-            vec.push_back(new Node(p->val));
+            hash_map[p] = new Node(p->val);
             p = p->next;
-            cnt++;
         }
         p = head;
-        vec.push_back(nullptr);
-
-        for (int i = 0; i < vec.size() - 1; i++)
+        while(p)
         {
-            if (p->random)
-            {
-                int index = hash_map[p->random];
-                vec[i]->random = vec[index];
-            }
-            else
-                vec[i]->random = nullptr;
-            vec[i]->next = vec[i + 1];
+            hash_map[p]->next = hash_map[p->next];
+            hash_map[p]->random = hash_map[p->random];
             p = p->next;
         }
-        return vec[0];
+        return hash_map[head];
     }
+    // Node *copyRandomList(Node *head)
+    // {
+    //     if (head == nullptr)
+    //         return nullptr;
+    //     vector<Node *> vec;
+    //     Node *p = head;
+    //     int cnt = 0;
+    //     unordered_map<Node *, int> hash_map;
+    //     while (p)
+    //     {
+    //         hash_map[p] = cnt;
+    //         vec.push_back(new Node(p->val));
+    //         p = p->next;
+    //         cnt++;
+    //     }
+    //     p = head;
+    //     vec.push_back(nullptr);
+
+    //     for (int i = 0; i < vec.size() - 1; i++)
+    //     {
+    //         if (p->random)
+    //         {
+    //             int index = hash_map[p->random];
+    //             vec[i]->random = vec[index];
+    //         }
+    //         else
+    //             vec[i]->random = nullptr;
+    //         vec[i]->next = vec[i + 1];
+    //         p = p->next;
+    //     }
+    //     return vec[0];
+    // }
 };
 // @lc code=end
 
