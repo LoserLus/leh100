@@ -20,57 +20,28 @@ class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
         
-        // unordered_set <string> wordSet(wordDict.begin(),wordDict.end());
-        // bool res = func(s,wordDict,0);
-        vector<int> mem(s.size(),-1);
-        bool res = func(s,wordDict,mem,0);
-        return res;
-    }
-    // bool func(string& s,  unordered_set<string>& wordSet,vector<int>& mem,int depth)
-    // {
-    //     if(depth==s.size())
-    //     {
-    //         return true;
-    //     }
-    //     if(mem[depth]!=-1) return mem[depth];
-    //     bool res = false;
-    //     for(int i=depth;i<s.size();i++)
-    //     {
-    //         string tmp = s.substr(depth,i-depth+1);
-    //         if(!wordSet.count(tmp)) continue;
-    //         res|=func(s,wordSet,mem,i+1);
-    //     }
-    //     if(res)mem[depth]=1;
-    //     else mem[depth] =0;
-    //     return res;
-    // }
-    bool func(string& s, vector<string>& wordDict,vector<int>& mem,int depth)
-    {
-        if(depth==s.size())
+        unordered_set<string> word_set(wordDict.begin(),wordDict.end());
+        vector<int> dp(s.size()+1,0);
+        dp[0] = 1;
+        for(int i=1;i<dp.size();i++)
         {
-            return true;
+            for(int j=0;j<i;j++)
+            {
+                string tmp = s.substr(j,i-j);
+                dp[i] |= dp[j]&&word_set.count(tmp);
+            }
         }
-        if(mem[depth]!=-1) return mem[depth];
-        bool res = false;
-        for(int i=0;i<wordDict.size();i++)
-        {
-            int word_size = wordDict[i].size();
-            string tmp = s.substr(depth,word_size);
-            if(tmp!=wordDict[i]) continue;
-            res|=func(s,wordDict,mem,depth+word_size);
-        }
-        if(res) mem[depth]=1;
-        else mem[depth]=0;
-        return res;
+        return dp[dp.size()-1]==1?true:false;
     }
+ 
 };
 // @lc code=end
 
 int main() {
     Solution solution;
     // your test code here
-    string s = "leetcode";
-    vector<string> wordDict = {"leet", "code"};
+    string s = "applepenapple";
+    vector<string> wordDict = {"apple", "pen"};
     bool res = solution.wordBreak(s,wordDict);
     cout<<res<<endl;
 }

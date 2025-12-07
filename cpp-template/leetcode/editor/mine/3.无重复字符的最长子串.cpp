@@ -17,25 +17,24 @@ using namespace std;
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-    if(s.size()<=1) return s.size();
-    int res = 0;
-    unordered_map <char,int> char_map;
-    for(char c:s)
-    {
-        char_map[c] = 0;
-    }
-    for(int left=0,right=0;right<s.size();right++)
-    {
-        char_map[s[right]]++;
-        while(char_map[s[right]]>1)
+        if(s.size()<=1) return s.size();
+        int res = 0;
+        unordered_map<char,int> char_map ;
+        for(auto& c:s) char_map[c] = 0;
+        char_map[s[0]]++;
+        for(int left=0,right=1;right<s.size();right++)
         {
-            char_map[s[left]]--;
-            left ++;
+            char_map[s[right]]++;
+            while(char_map[s[right]]>1)
+            {
+                char_map[s[left]]--;
+                left++;
+            }
+           
+            res = max(res,right-left+1);
         }
-        res = max(res,right-left +1 );
+        return res;
     }
-    return res;
-}
 };
 // @lc code=end
 

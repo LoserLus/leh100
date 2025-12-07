@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 #include "../common/ListNode.cpp"
 #include "../common/TreeNode.cpp"
 #include "../common/utils.cpp"
@@ -29,19 +30,21 @@ class Solution {
 public:
     ListNode* sortList(ListNode* head) {
         if(!head||!head->next) return head;
-        ListNode dummy(0);
-        dummy.next = head;
-        ListNode* node = &dummy;
-        ListNode* pre = node;
-
+        vector<ListNode*> vec;
+        ListNode* node = head;
         while (node)
         {
-            
-            while(pre)
-           node = node->next;
+            vec.push_back(node);
+            node = node->next;
         }
-        return dummy.next;
-        
+
+        sort(vec.begin(),vec.end(),[](ListNode* n1,ListNode* n2)->bool {return n1->val<n2->val;});
+        for(int i=0;i<vec.size()-1;i++)
+        {
+            vec[i]->next = vec[i+1];
+        }
+        vec[vec.size()-1]->next = nullptr;
+        return vec[0];
     }
 };
 // @lc code=end
