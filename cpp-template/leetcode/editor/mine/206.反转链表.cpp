@@ -28,13 +28,12 @@ using namespace std;
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        if(head==nullptr||head->next==nullptr) return head;
-        ListNode dummy;
-        ListNode* p;
-        p = head;
+        ListNode dummy(0);
+        dummy.next = nullptr;
+        auto* p = head;
         while(p)
         {
-            ListNode* tmp = p->next;
+            auto* tmp = p->next;
             p->next = dummy.next;
             dummy.next = p;
             p = tmp;

@@ -30,44 +30,23 @@ class Solution
 public:
     ListNode *removeNthFromEnd(ListNode *head, int n)
     {
-        if (head == nullptr) return head;
-        ListNode dummy(0);
-        dummy.next = head;
-        ListNode* first = dummy.next;
-        ListNode* second = &dummy;
-        while(n--)
-        {
-            first = first->next;
-        }
-        while(first)
-        {
-            first=first->next;
-            second = second->next;
-        }
-        second->next = second->next->next;
-        return dummy.next;
-    }
-	// ListNode *removeNthFromEnd(ListNode *head, int n)
-	// {
-	// 	if (head == nullptr) return head;
-	// 	int len = 0;
-	// 	ListNode dummy(0);
-	// 	dummy.next = head;
-	// 	ListNode *node = &dummy;
-	// 	while (node)
-	// 		{
-	// 			len++;
-	// 			node = node->next;
-	// 		}
-	// 	node = &dummy;
-	// 	int cnt = 0;
-	// 	for (int i = 0; i < len - n -1; ++i)
-	// 		{
-	// 			node = node->next;
-	// 		}
-	// 	node->next = node->next->next;
-	// 	return dummy.next;
-	// }
+		if(head==nullptr) return head;
+		ListNode dummy(0);
+		dummy.next = head;
+		ListNode* fast = &dummy;
+		ListNode* slow = &dummy;
+		while(n--)
+		{
+			fast = fast->next;
+		}
+		while(fast->next)
+		{
+			slow=slow->next;
+			fast = fast->next;
+		}
+		slow->next = slow->next->next;
+		return dummy.next;
+	}
 };
 // @lc code=end
 
@@ -75,7 +54,7 @@ int main()
 {
 	Solution solution;
 	// your test code here
-	ListNode *head = ListNode::createHead({1,2,3,4,5});
+	ListNode *head = ListNode::createHead({1,2});
 	int n = 2;
 	ListNode *res = solution.removeNthFromEnd(head, n);
 	ListNode::print(res);

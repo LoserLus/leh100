@@ -17,35 +17,34 @@ using namespace std;
 // @lc code=start
 class Solution {
 public:
-    vector<pair<int,int>> dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+vector<pair<int,int>> dirs = {{1,0},{-1,0},{0,1},{0,-1}};
     int numIslands(vector<vector<char>>& grid) {
       if(grid.size()==0) return 0;
-    //   if(grid.size()==1&&grid[0].size()==1) return 1;
       int res = 0;
       for(int i=0;i<grid.size();i++)
       {
-        for(int j =0;j<grid[0].size();j++)
+        for(int j=0;j<grid[0].size();j++)
         {
-            if(grid[i][j]=='0') continue;
-            res++;
-            func(grid,i,j);
+          if(grid[i][j]=='0') continue;
+          func(grid,i,j);
+          res++;
         }
+
       }
       return res;
     }
-    void func(vector<vector<char>>& grid,int r, int c)
+    void func(vector<vector<char>>& grid, int r,int c)
     {
-        if(r<0||r>=grid.size()) return ;
-        if(c<0||c>=grid[0].size()) return ;
+        if(r>=grid.size()) return;
+        if(c>=grid[0].size()) return;
         if(grid[r][c]=='0') return;
         grid[r][c] = '0';
-        for( auto& dir:dirs)
+        for(auto&d :dirs)
         {
-            int nr = dir.first + r;
-            int nc = dir.second + c;
-            func(grid,nr,nc);
+          int r_n = r+d.first;
+          int c_n = c+d.second; 
+          func(grid,r_n,c_n);
         }
-        return ;
     }
 };
 // @lc code=end
@@ -57,7 +56,7 @@ int main() {
         {'1','1','1','1','0'},
         {'1','1','0','1','0'},
         {'1','1','0','0','0'},
-        {'0','0','0','0','0'},
+        {'0','0','0','0','1'},
 	});
 	print_vec_2d<char>(board);
 	auto res = solution.numIslands(board);
