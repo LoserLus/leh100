@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <unordered_map>
 // #include "../common/ListNode.cpp"
 // #include "../common/TreeNode.cpp"
 
@@ -19,69 +20,19 @@ class Solution {
 public:
      vector<int> twoSum(vector<int>& nums, int target)
      {
-        std::unordered_map<int,int> nums_map;
-        for(int i =0;i<nums.size();i++)
+        unordered_map<int,int> num_map;
+        for(int i=0;i<nums.size();i++)
         {
-            auto it = nums_map.find(target-nums[i]);
-            if(it!=nums_map.end())
+            auto it = num_map.find(target-nums[i]);
+            if(it!=num_map.end())
             {
                 return vector<int>{i,it->second};
             }
-            nums_map[nums[i]] = i;
-            
+            num_map[nums[i]]=i;
         }
         return vector<int>{-1,-1};
-        
      }
-    //  vector<int> twoSum(vector<int>& nums, int target) {
-    //     vector<Node> vec;
-    //     for (int i = 0; i < nums.size(); i++)
-    //     {
-    //         vec.push_back(Node{nums[i],i});
-    //     }
-    //     auto cmp = [](Node&n1,Node&n2)->bool {return n1.num<n2.num;};
-    //     sort(vec.begin(), vec.end(),cmp);
-    //     for (int i = 0; i < vec.size(); i++) {
-    //         int min = vec[i].num;
-    //         int find_value = target - min;
-    //         if (find_value > vec.back().num)
-    //             continue;
-          
-    //         int index = binary_sarch(vec, i, find_value);
-    //         if (index != -1) {
-    //             // vector<int> r= {vec[i].pos, vec[index].pos};
-    //             // return r;
-    //             return vector<int> {vec[i].pos, vec[index].pos};
-    //         }
-    //     }
-    //     return vector<int>{-1,-1};
-    // }
-    // struct Node{
-    //         int num;
-    //         int pos;
-    //     };
-    // int binary_sarch(vector<Node>& nums, int start, int value) {
-    //     int index = -1;
-    //     if (nums.back().num < value)
-    //         return index;
-    //     int l_index = start+1;
-    //     int r_index = nums.size() - 1;
-        
-    //     while(l_index<=r_index)
-    //     {
-    //         int m_index = (l_index + r_index) / 2;
-    //         if(nums[m_index].num==value) return m_index;
-    //         else if (nums[m_index].num < value)
-    //         {
-    //             l_index = m_index + 1;
-    //         }
-    //         else if(nums[m_index].num>value)
-    //         {
-    //             r_index = m_index -1;
-    //         }
-    //     }
-    //     return index;
-    // }
+  
 };
 // @lc code=end
 

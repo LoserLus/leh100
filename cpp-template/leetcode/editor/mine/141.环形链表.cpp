@@ -28,37 +28,17 @@ class Solution {
 public:
     bool hasCycle(ListNode *head) 
     {
-        if(!head||!head->next) return false;    
-        ListNode* slow = head;
-        ListNode* fast = head;
-        while(fast&&fast->next)
+        if(head==nullptr||head->next==nullptr) return false;
+        auto* fast = head->next->next;
+        auto* slow = head;
+        while(fast && fast->next)
         {
-            slow = slow->next;
+            if(slow==fast) return true;
+            slow=slow->next;
             fast = fast->next->next;
-            if(fast==slow)
-            {
-                return true;
-            }
-            
         }
         return false;
     }
-    // bool hasCycle(ListNode *head) {
-    //     if(!head||!head->next) return false;
-    //     unordered_map<ListNode*,int> hashmap;
-    //     ListNode* node = head;
-    //     while(node!=nullptr)
-    //     {
-    //         auto it = hashmap.find(node);
-    //         if(it!=hashmap.end())
-    //         {
-    //             return true;
-    //         }
-    //         hashmap[node] = 1;
-    //         node = node -> next;
-    //     }
-    //     return false;
-    // }
 };
 // @lc code=end
 

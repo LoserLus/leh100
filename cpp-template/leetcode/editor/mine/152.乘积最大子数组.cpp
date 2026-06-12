@@ -18,57 +18,27 @@ public:
     int maxProduct(vector<int>& nums) {
         if(nums.size()==1) return nums[0];
         if(nums.size()==2) return max({nums[0],nums[1],nums[0]*nums[1]});
-        int maxInt = (1U << (sizeof(int) * 8 - 1)) - 1; // 2^(n-1) - 1
-        int minInt = -(1U << (sizeof(int) * 8 - 1));    // -2^(n-1)
-        vector<int> dp(nums.size(),minInt);
-        vector<int> maxdp(nums.size(),minInt);
-        vector<int> mindp(nums.size(),maxInt);
+        vector<int> min_dp(nums.size(),INT32_MAX);
+        vector<int> max_dp(nums.size(),INT32_MIN);
+        vector<int> dp(nums.size(),0);
         dp[0] = nums[0];
-        maxdp[0] = nums[0];
-        mindp[0] = nums[0];
-        
-        for(size_t i=1;i<dp.size();i++)
+        min_dp[0] = nums[0];
+        max_dp[0] = nums[0];
+        for(int i=1;i<nums.size();i++)
         {
             if(nums[i]==0)
             {
-                maxdp[i] = 0;
-                mindp[i] = 0;
+                min_dp[i] = 0;
+                max_dp[i] = 0;
             }
-            else{
-                maxdp[i] = max({nums[i],nums[i]*maxdp[i-1],nums[i]*mindp[i-1]});
-                mindp[i] = min({nums[i],nums[i]*maxdp[i-1],nums[i]*mindp[i-1]});
+            else
+            {
+                max_dp[i] = max({nums[i],nums[i]*max_dp[i-1],nums[i]*min_dp[i-1]});
+                min_dp[i] = min({nums[i],nums[i]*max_dp[i-1],nums[i]*min_dp[i-1]});
             }
-            dp[i] = max({dp[i-1],maxdp[i]});
-            
+            dp[i] = max(dp[i-1],max_dp[i]);
         }
         return dp[nums.size()-1];
-        
-        // vector<vector<int>> result(nums.size(),vector<int>(nums.size(),1));
-        // auto sum = [&nums](size_t i,size_t j)->int{
-        //     int r=1;
-        //     for(size_t k = i;k<j;k++)
-        //     {
-        //         r*=nums[k];
-        //     }
-        //     return r;
-        // };
-        // for(size_t i = 0;i<nums.size();i++)
-        // {
-        //     for(size_t j=0;j<nums.size();j++)
-        //     {
-        //         result[i][j] = sum(i,j);
-        //     }
-        // }
-        // vector<int> dp(nums.size(),1);
-        // dp[0] = nums[0];
-        // for(size_t i=1;i<dp.size();i++)
-        //     {
-        //         for(size_t j =0;j<i;j++)
-        //         {
-        //             dp[i] = max(dp[i],result[j][i]);
-        //         }
-        //     }
-        // return *max_element(dp.begin(),dp.end());
         
     }
 };

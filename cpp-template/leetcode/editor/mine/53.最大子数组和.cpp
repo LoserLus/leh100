@@ -19,18 +19,16 @@ using namespace std;
 class Solution {
 public:
     int maxSubArray(vector<int>& nums) {
-        if(nums.size()==0) return 0;
-        if(nums.size()==1) return nums[0];
-        int res = INT32_MIN;
-        int min_presum = 0;
-        int presum = 0;
-        for(int i=0;i<nums.size();i++)
-        {
-            presum +=nums[i];
-            res = max(res,presum-min_presum);
-            min_presum = min(presum,min_presum);
-        }
-        return res;
+       if(nums.size()==0) return 0;
+       if(nums.size()==1) return nums[0];
+    //    vector<int> dp(nums);
+        auto& dp = nums;
+       for (int i = 1; i < dp.size(); i++)
+       {
+            if(dp[i-1]>0) dp[i]+=dp[i-1];
+       }
+       return *max_element(dp.begin(),dp.end());
+       
     }
 };
 // @lc code=end
